@@ -1,0 +1,5 @@
+name: tardiscraft
+version: '1.0'
+main: net.bobthehuge.tardiscraft.Tardiscraft
+api-version: '1.19'
+depend: ['Multiverse-Core']
