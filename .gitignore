@@ -1,3 +1,5 @@
 .idea
 target
-server
+server/logs
+server/libraries
+server/cache
