@@ -8,6 +8,7 @@
   "minecraft:adventure/adventuring_time": {
     "criteria": {
       "minecraft:stony_shore": "2024-10-17 19:21:02 +0200",
+      "minecraft:forest": "2024-11-17 02:07:45 +0100",
       "minecraft:desert": "2024-10-17 20:21:45 +0200",
       "minecraft:warm_ocean": "2024-11-16 18:13:31 +0100",
       "minecraft:plains": "2024-10-18 19:15:23 +0200"
