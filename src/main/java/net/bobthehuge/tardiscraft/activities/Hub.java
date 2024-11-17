@@ -1,20 +1,13 @@
 package net.bobthehuge.tardiscraft.activities;
 
-import com.onarandombox.MultiverseCore.MVWorld;
-import com.onarandombox.MultiverseCore.api.MVDestination;
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import com.onarandombox.MultiverseCore.destination.ExactDestination;
-import com.onarandombox.MultiverseCore.destination.WorldDestination;
-import net.bobthehuge.tardiscraft.playerinfos.PlayerInfos;
 import net.bobthehuge.tardiscraft.Tardiscraft;
-import net.kyori.adventure.Adventure;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.*;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -26,7 +19,13 @@ public class Hub implements Warp {
     private final String worldName = "hub";
 
     private enum PlayerStates {
-        WANDERING,
+        WANDERING;
+        public static PlayerStates getPlayerState(String state) {
+            switch (state) {
+                case "WANDERING": return WANDERING;
+                default: return null;
+            }
+        }
     }
 
     @Override
@@ -60,7 +59,7 @@ public class Hub implements Warp {
     }
 
     @Override
-    public void CreateWarp() {
+    public void createWarp() {
         if (!Tardiscraft.MVC.getMVWorldManager().isMVWorld(worldName)) {
             Tardiscraft.MVC.getMVWorldManager().addWorld(
                 worldName,
@@ -85,6 +84,7 @@ public class Hub implements Warp {
         w.setAllowMonsterSpawn(false);
         w.setEnableWeather(false);
         w.setTime("noon");
+        w.setEnableWeather(false);
 
         cbw.setGameRule(GameRule.DISABLE_RAIDS, true);
         cbw.setGameRule(GameRule.KEEP_INVENTORY, true);
@@ -103,23 +103,11 @@ public class Hub implements Warp {
         cbw.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
     }
 
-    public void PlayerJoin(Player player) {
+    public void playerJoin(Player player) {
         Tardiscraft.MVC.getMVWorldManager().loadWorld(worldName);
+        Tardiscraft.PlayersInfos.get(player).setWarp(this);
 
-        PlayerInfos infos = new PlayerInfos(player);
-        infos.setWarp(this);
-        Tardiscraft.PlayersInfos.put(player,infos);
-
-        SetPlayerState(player, PlayerStates.WANDERING);
-
-        ExactDestination dst = new ExactDestination();
-        dst.setDestination(getWorld().getSpawnLocation());
-
-        Tardiscraft.MVC.getSafeTTeleporter().safelyTeleport(
-            Bukkit.getConsoleSender(),
-            player,
-            dst
-        );
+        setPlayerState(player, PlayerStates.WANDERING);
 
         players.add(player);
 
@@ -129,7 +117,7 @@ public class Hub implements Warp {
         ));
     }
 
-    public void PlayerLeave(Player player) {
+    public void playerLeave(Player player) {
         players.remove(player);
 
         if (players.isEmpty())
@@ -137,16 +125,16 @@ public class Hub implements Warp {
     }
 
     @Override
-    public void StartActivity() {
+    public void startActivity() {
 
     }
 
     @Override
-    public void StopActivity() {
+    public void stopActivity() {
 
     }
 
-    private void SetPlayerState(Player player, PlayerStates state) {
+    private void setPlayerState(Player player, PlayerStates state) {
         switch (state) {
             case WANDERING -> {
                 player.setFlyingFallDamage(TriState.FALSE);

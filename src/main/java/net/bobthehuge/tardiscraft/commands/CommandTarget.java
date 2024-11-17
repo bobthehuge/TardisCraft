@@ -1,7 +1,18 @@
 package net.bobthehuge.tardiscraft.commands;
 
 public enum CommandTarget {
-    ALL,
+    NONE,
     ME,
-    OTHERS
+    OTHERS,
+    ALL;
+
+    public static CommandTarget getCommandTarget(String str) {
+        return switch (str) {
+            case "NONE" -> NONE;
+            case "ME" -> ME;
+            case "OTHERS" -> OTHERS;
+            case "ALL" -> ALL;
+            default -> null;
+        };
+    }
 }

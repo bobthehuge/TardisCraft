@@ -2,11 +2,16 @@ package net.bobthehuge.tardiscraft.activities;
 
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import net.bobthehuge.tardiscraft.Tardiscraft;
+import net.bobthehuge.tardiscraft.managers.WarpManager;
+import net.bobthehuge.tardiscraft.playerinfos.PlayerInfos;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static net.bobthehuge.tardiscraft.Tardiscraft.MVC;
+import static net.bobthehuge.tardiscraft.Tardiscraft.PlayersInfos;
+import static net.bobthehuge.tardiscraft.managers.WarpManager.warpPlayer;
 
 public class Bedwars implements Warp {
 
@@ -15,12 +20,20 @@ public class Bedwars implements Warp {
     private final String name;
 
     private WarpState warpState;
-    private List<Player> players = new ArrayList<Player>();
+    private List<Player> players;
 
-    public Bedwars(String worldName) {
+    public Bedwars(List<Player> players, String worldName) {
         this.warpState = WarpState.INIT;
         this.worldName = worldName;
-        this.name = "bedwars_" + Tardiscraft.BedwarsInstances.size();
+        this.name = "bedwars_" + WarpManager.bedwars.size();
+
+        this.players = players;
+
+        MVC.getMVWorldManager().loadWorld(worldName);
+
+        players.forEach(p -> {
+            warpPlayer(p, this);
+        });
     }
 
     @Override
@@ -54,12 +67,13 @@ public class Bedwars implements Warp {
     }
 
     @Override
-    public void CreateWarp() {
+    public void createWarp() {
         if (!Tardiscraft.MVC.getMVWorldManager().isMVWorld(worldName)) {
             try {
                 throw new RuntimeException(String.format("Can't find %s world", worldName));
             } catch (Exception e) {
                 Bukkit.getLogger().warning(e.getMessage());
+                return;
             }
         }
 
@@ -79,38 +93,49 @@ public class Bedwars implements Warp {
 
         cbw.setGameRule(GameRule.DISABLE_RAIDS, true);
         cbw.setGameRule(GameRule.KEEP_INVENTORY, true);
+        cbw.setGameRule(GameRule.DO_FIRE_TICK, true);
+        cbw.setGameRule(GameRule.DO_TILE_DROPS, true);
+        cbw.setGameRule(GameRule.MOB_GRIEFING, true);
+
         cbw.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        cbw.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-        cbw.setGameRule(GameRule.DO_FIRE_TICK, false);
         cbw.setGameRule(GameRule.DO_INSOMNIA, false);
         cbw.setGameRule(GameRule.DO_MOB_LOOT, false);
         cbw.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         cbw.setGameRule(GameRule.DO_PATROL_SPAWNING, false);
         cbw.setGameRule(GameRule.DO_TRADER_SPAWNING, false);
+        cbw.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         cbw.setGameRule(GameRule.DO_WARDEN_SPAWNING, false);
         cbw.setGameRule(GameRule.DO_VINES_SPREAD, false);
-        cbw.setGameRule(GameRule.DO_TILE_DROPS, false);
-        cbw.setGameRule(GameRule.MOB_GRIEFING, false);
         cbw.setGameRule(GameRule.SPECTATORS_GENERATE_CHUNKS, false);
     }
 
     @Override
-    public void PlayerJoin(Player player) {
+    public void playerJoin(Player player) {
+        if (players.contains(player)) {
+            return;
+        }
+        PlayersInfos.get(player).setWarp(this);
+        players.add(player);
+    }
+
+    @Override
+    public void playerLeave(Player player) {
+        if (!players.contains(player)) {
+            return;
+        }
+        WarpManager.hub.playerJoin(player);
+        players.remove(player);
+    }
+
+    @Override
+    public void startActivity() {
 
     }
 
     @Override
-    public void PlayerLeave(Player player) {
-
-    }
-
-    @Override
-    public void StartActivity() {
-
-    }
-
-    @Override
-    public void StopActivity() {
-
+    public void stopActivity() {
+        players.forEach(p -> {
+            warpPlayer(p, WarpManager.hub);
+        });
     }
 }
