@@ -1,13 +1,11 @@
 package net.bobthehuge.tardiscraft.playerinfos;
 
-import net.bobthehuge.tardiscraft.activities.Warp;
-import net.bobthehuge.tardiscraft.lobbies.Lobby;
+import net.bobthehuge.tardiscraft.minigames.Minigame;
 import org.bukkit.entity.Player;
 
 public class PlayerInfos {
     private final Player player;
-    private Warp warp = null;
-    private Lobby lobby = null;
+    private Minigame game = null;
     private PlayerRole role = PlayerRole.STANDARD;
 
     public PlayerInfos(Player player) {
@@ -19,22 +17,6 @@ public class PlayerInfos {
 
     public Player getPlayer() {
         return this.player;
-    }
-
-    public Warp getWarp() {
-        return this.warp;
-    }
-
-    public void setWarp(Warp warp) {
-        this.warp = warp;
-    }
-
-    public Lobby getLobby() {
-        return this.lobby;
-    }
-
-    public void setLobby(Lobby lobby) {
-        this.lobby = lobby;
     }
 
     public PlayerRole getRole() {
