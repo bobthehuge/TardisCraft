@@ -4,6 +4,7 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import net.bobthehuge.tardiscraft.activities.Warp;
 import net.bobthehuge.tardiscraft.activities.Hub;
 import net.bobthehuge.tardiscraft.commands.WarpCommand;
+import net.bobthehuge.tardiscraft.commands.IslandCommand;
 import net.bobthehuge.tardiscraft.connection.JoinListener;
 import net.bobthehuge.tardiscraft.playerinfos.PlayerInfos;
 import net.bobthehuge.tardiscraft.playerinfos.PlayerRole;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public final class Tardiscraft extends JavaPlugin {
 
@@ -42,11 +44,11 @@ public final class Tardiscraft extends JavaPlugin {
 
         Hub.CreateWarp();
 
-
         if (!registerWarp(Hub))
             throw new RuntimeException("Can't register Hub in Warps list");
 
         getServer().getCommandMap().register("warp", new WarpCommand());
+        getServer().getCommandMap().register("island", new IslandCommand());
     }
 
     @Override
