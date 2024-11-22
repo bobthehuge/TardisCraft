@@ -23,6 +23,12 @@ public class SkyBlockIslandGenerator implements IslandGenerator {
         }
     }
 
+    @Override
+    public void decorateIsland(@NotNull Context ctx) {
+        generateTree(ctx);
+        generateChest(ctx);
+    }
+
     private void generateTree(@NotNull Context ctx) {
         Location loc = ctx.fromOrigin(3, 0, 0);
         ctx.world().generateTree(loc, TreeType.TREE);
@@ -50,11 +56,5 @@ public class SkyBlockIslandGenerator implements IslandGenerator {
             data.setFacing(ctx.getNorth());
             block.setBlockData(data);
         }
-    }
-
-    @Override
-    public void decorateIsland(@NotNull Context ctx) {
-        generateTree(ctx);
-        generateChest(ctx);
     }
 }
