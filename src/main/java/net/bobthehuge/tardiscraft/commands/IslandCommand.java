@@ -2,8 +2,8 @@ package net.bobthehuge.tardiscraft.commands;
 
 import net.bobthehuge.tardiscraft.Tardiscraft;
 import net.bobthehuge.tardiscraft.activities.Warp;
+import net.bobthehuge.tardiscraft.generators.BedWarsGenerator;
 import net.bobthehuge.tardiscraft.generators.Generator;
-import net.bobthehuge.tardiscraft.generators.IslandGenerator;
 import net.bobthehuge.tardiscraft.generators.SkyBlockIslandGenerator;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -67,7 +67,7 @@ public class IslandCommand extends Command {
         Location origin = player.getLocation();
 
         try {
-            Generator gen = new SkyBlockIslandGenerator();
+            Generator gen = new BedWarsGenerator<>(new SkyBlockIslandGenerator());
             gen.generate(createContext(world, origin, args));
         } catch (CommandException e) {
             commandSender.sendMessage(e.getMessage());
