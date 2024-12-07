@@ -3,6 +3,7 @@ package net.bobthehuge.tardiscraft;
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import net.bobthehuge.tardiscraft.activities.Warp;
 import net.bobthehuge.tardiscraft.activities.Hub;
+import net.bobthehuge.tardiscraft.commands.SkyWarsCommand;
 import net.bobthehuge.tardiscraft.commands.WarpCommand;
 import net.bobthehuge.tardiscraft.commands.IslandCommand;
 import net.bobthehuge.tardiscraft.connection.JoinListener;
@@ -49,6 +50,7 @@ public final class Tardiscraft extends JavaPlugin {
 
         getServer().getCommandMap().register("warp", new WarpCommand());
         getServer().getCommandMap().register("island", new IslandCommand());
+        getServer().getCommandMap().register("skywars", new SkyWarsCommand());
     }
 
     @Override
