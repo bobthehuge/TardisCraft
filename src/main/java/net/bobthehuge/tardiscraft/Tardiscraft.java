@@ -1,8 +1,10 @@
 package net.bobthehuge.tardiscraft;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
+import it.unimi.dsi.fastutil.Pair;
 import net.bobthehuge.tardiscraft.activities.Warp;
 import net.bobthehuge.tardiscraft.activities.Hub;
+import net.bobthehuge.tardiscraft.commands.ReliefIslandCommand;
 import net.bobthehuge.tardiscraft.commands.SkyWarsCommand;
 import net.bobthehuge.tardiscraft.commands.WarpCommand;
 import net.bobthehuge.tardiscraft.commands.IslandCommand;
@@ -16,11 +18,7 @@ import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public final class Tardiscraft extends JavaPlugin {
 
@@ -51,6 +49,7 @@ public final class Tardiscraft extends JavaPlugin {
         getServer().getCommandMap().register("warp", new WarpCommand());
         getServer().getCommandMap().register("island", new IslandCommand());
         getServer().getCommandMap().register("skywars", new SkyWarsCommand());
+        getServer().getCommandMap().register("reliefisland", new ReliefIslandCommand());
     }
 
     @Override

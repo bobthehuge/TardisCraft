@@ -41,6 +41,10 @@ public class TreeDecorator implements Decorator {
     private void decorateAt(@NotNull Location location) {
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
+                if (Math.abs(x) + Math.abs(z) > 1) {
+                    continue;
+                }
+
                 Block block = location.clone().add(x, 0, z).getBlock();
                 if (block.getType() != Material.GRASS_BLOCK) {
                     return;
